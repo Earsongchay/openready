@@ -1,1 +1,224 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Plan Setup — OpenReady</title><link rel="stylesheet" href="../assets/styles.css"></head><body><div class="shell"><aside class="sidebar"><a class="brand" href="../index.html"><span class="logo">O</span>OpenReady</a><nav><a href="dashboard.html">Dashboard</a><a class="active" href="onboarding.html">My plan</a><a href="budget.html">Budget</a><a href="forecast.html">Forecast</a><a href="scenarios.html">Scenarios</a><a href="checklist.html">Checklist</a></nav></aside><main class="main"><div class="page-head"><div><h1>Build your startup plan</h1><p>You can use estimates now and replace them later.</p></div></div><div class="wizard"><div class="card steps"><div class="step done"><span class="step-num">✓</span>Business</div><div class="step done"><span class="step-num">✓</span>Location</div><div class="step current"><span class="step-num">3</span>Core assumptions</div><div class="step"><span class="step-num">4</span>Equipment</div><div class="step"><span class="step-num">5</span>Staff</div><div class="step"><span class="step-num">6</span>Menu</div><div class="step"><span class="step-num">7</span>Review</div></div><div class="card"><h2 style="margin-top:0">Core assumptions</h2><p class="muted">These drive your first forecast. You can change them anytime.</p><form class="form-grid" id="quickPlanner"><div class="field"><label>Business type</label><select><option>Milk-tea shop</option><option>Café</option></select></div><div class="field"><label>Planning period</label><select name="months"><option value="3">3 months</option><option value="6" selected>6 months</option><option value="12">12 months</option></select></div><div class="field"><label>One-time setup cost</label><input name="startup" type="number" value="12000"></div><div class="field"><label>Monthly rent</label><input name="rent" type="number" value="700"></div><div class="field"><label>Monthly salaries</label><input name="salary" type="number" value="1100"></div><div class="field"><label>Monthly utilities + other fixed</label><input name="utilities" type="number" value="480"></div><div class="field"><label>Expected monthly revenue</label><input name="revenue" type="number" value="1500"></div><div class="field"><label>Available capital</label><input type="number" value="18000"></div></form><div class="goodbox" style="margin-top:18px">Quick result: <span id="quickResult"><strong>$16,680</strong><span class="muted"> estimated capital before contingency</span></span></div><div class="row" style="margin-top:18px"><a class="btn secondary" href="dashboard.html">Save draft</a><a class="btn primary" href="budget.html">Continue to budget</a></div></div></div></main></div><script src="../assets/app.js"></script></body></html>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Plan Generator — OpenReady</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html"><span class="logo">O</span>OpenReady</a>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a class="active" href="onboarding.html">Plan generator</a>
+      <a href="budget.html">Budget</a>
+      <a href="forecast.html">Forecast</a>
+      <a href="scenarios.html">Scenarios</a>
+      <a href="checklist.html">Checklist</a>
+    </nav>
+    <div class="bottom">Prototype · Café & milk-tea startup planner</div>
+  </aside>
+
+  <main class="main plan-generator" id="planGenerator">
+    <div class="page-head plan-head">
+      <div>
+        <span class="eyebrow">Guided startup planner</span>
+        <h1>Build a plan you can actually use</h1>
+        <p>Start with rough assumptions. Replace them with real prices and quotations as you research.</p>
+      </div>
+      <div class="mode-switch" role="group" aria-label="Planning mode">
+        <button class="mode-btn active" type="button" data-plan-mode="quick">Quick plan</button>
+        <button class="mode-btn" type="button" data-plan-mode="detailed">Detailed plan</button>
+      </div>
+    </div>
+
+    <div class="generator-progress card">
+      <div class="generator-progress-top"><strong id="stepLabel">Step 1 of 9 · Business</strong><span id="stepPercent">11%</span></div>
+      <div class="progress"><span id="wizardProgress" style="width:11%"></span></div>
+      <div class="step-pills" id="stepPills">
+        <button class="step-pill active" data-go-step="1">1 Business</button>
+        <button class="step-pill" data-go-step="2">2 Money</button>
+        <button class="step-pill" data-go-step="3">3 Location</button>
+        <button class="step-pill" data-go-step="4">4 Setup</button>
+        <button class="step-pill" data-go-step="5">5 Staff</button>
+        <button class="step-pill" data-go-step="6">6 Sales</button>
+        <button class="step-pill" data-go-step="7">7 Expenses</button>
+        <button class="step-pill" data-go-step="8">8 Forecast</button>
+        <button class="step-pill" data-go-step="9">9 Results</button>
+      </div>
+    </div>
+
+    <div class="generator-layout">
+      <section class="card generator-card">
+        <form id="startupPlanForm">
+          <div class="wizard-panel active" data-step="1">
+            <div class="panel-kicker">Your idea</div>
+            <h2>What are you planning to open?</h2>
+            <p class="muted">We use this to generate the first equipment, staff, and cost template.</p>
+            <div class="choice-grid">
+              <label class="choice-card selected"><input type="radio" name="businessType" value="Milk-tea shop" checked><strong>Milk-tea shop</strong><span>Takeaway or seating, drinks-first menu</span></label>
+              <label class="choice-card"><input type="radio" name="businessType" value="Café"><strong>Café</strong><span>Coffee-focused with optional food and seating</span></label>
+            </div>
+            <div class="form-grid section-gap">
+              <div class="field"><label>Shop size</label><select name="shopSize"><option value="kiosk">Kiosk</option><option value="small" selected>Small shop</option><option value="medium">Medium shop</option><option value="unknown">I don't know yet</option></select></div>
+              <div class="field"><label>City</label><input name="city" value="Phnom Penh"></div>
+              <div class="field"><label>Target opening month</label><input name="openingMonth" type="month" value="2027-01"></div>
+              <div class="field"><label>Planning period</label><select name="planningMonths"><option value="3">3 months</option><option value="6" selected>6 months</option><option value="12">12 months</option></select></div>
+            </div>
+            <div class="generated-hint"><strong>Starter template generated</strong><span id="templateHint">Small milk-tea shop · core equipment, 3 staff roles, and a 6-month plan.</span></div>
+          </div>
+
+          <div class="wizard-panel" data-step="2">
+            <div class="panel-kicker">Your limit</div>
+            <h2>How much money can you put into this?</h2>
+            <p class="muted">We treat this as a constraint, not as a target to spend.</p>
+            <div class="form-grid">
+              <div class="field"><label>Cash available now</label><div class="money-input"><span>$</span><input name="availableCapital" type="number" min="0" value="12000"></div></div>
+              <div class="field"><label>Maximum you are willing to invest</label><div class="money-input"><span>$</span><input name="maxInvestment" type="number" min="0" value="15000"></div></div>
+              <div class="field"><label>Funding source</label><select name="fundingSource"><option>Savings</option><option>Partner</option><option>Loan</option><option>Mixed</option></select></div>
+              <div class="field"><label>Already spent before this plan</label><div class="money-input"><span>$</span><input name="alreadySpent" type="number" min="0" value="0"></div></div>
+            </div>
+            <div class="insight-box" id="capitalConstraint">Your current maximum investment is <strong>$15,000</strong>. We will flag choices that push the plan above it.</div>
+          </div>
+
+          <div class="wizard-panel" data-step="3">
+            <div class="panel-kicker">Location</div>
+            <h2>What will the location cost before you even open?</h2>
+            <div class="inline-question"><span>Do you already have a location?</span><label><input type="radio" name="hasLocation" value="yes"> Yes</label><label><input type="radio" name="hasLocation" value="no" checked> Not yet</label></div>
+            <div class="form-grid section-gap">
+              <div class="field"><label>Monthly rent</label><div class="money-input"><span>$</span><input name="rent" type="number" min="0" value="600"></div></div>
+              <div class="field"><label>Deposit</label><select name="depositMonths"><option value="1">1 month</option><option value="2" selected>2 months</option><option value="3">3 months</option></select></div>
+              <div class="field"><label>Advance rent</label><select name="advanceMonths"><option value="0">None</option><option value="1" selected>1 month</option><option value="2">2 months</option></select></div>
+              <div class="field"><label>Utility / agent deposits</label><div class="money-input"><span>$</span><input name="locationExtras" type="number" min="0" value="150"></div></div>
+            </div>
+            <div class="calculation-strip"><span>Cash needed for location before opening</span><strong id="locationUpfront">$1,950</strong></div>
+          </div>
+
+          <div class="wizard-panel" data-step="4">
+            <div class="panel-kicker">Setup</div>
+            <h2>What do you need to buy and prepare?</h2>
+            <p class="muted">These are planning estimates. Turn items off if you already own them or do not need them.</p>
+            <div class="setup-list">
+              <label class="setup-item"><input type="checkbox" data-setup-cost="350" checked><span><strong>Sealing machine</strong><small>Equipment · estimate</small></span><b>$350</b></label>
+              <label class="setup-item"><input type="checkbox" data-setup-cost="600" checked><span><strong>Refrigerator</strong><small>Equipment · estimate</small></span><b>$600</b></label>
+              <label class="setup-item"><input type="checkbox" data-setup-cost="180" checked><span><strong>2 blenders</strong><small>Equipment · estimate</small></span><b>$180</b></label>
+              <label class="setup-item"><input type="checkbox" data-setup-cost="250" checked><span><strong>Water filter</strong><small>Equipment · estimate</small></span><b>$250</b></label>
+              <label class="setup-item"><input type="checkbox" data-setup-cost="1800" checked><span><strong>Renovation & signage</strong><small>Fit-out · estimate</small></span><b>$1,800</b></label>
+              <label class="setup-item"><input type="checkbox" data-setup-cost="1100" checked><span><strong>Counter, tables & chairs</strong><small>Furniture · estimate</small></span><b>$1,100</b></label>
+              <label class="setup-item"><input type="checkbox" data-setup-cost="450" checked><span><strong>Initial ingredients & packaging</strong><small>Opening stock · estimate</small></span><b>$450</b></label>
+              <label class="setup-item"><input type="checkbox" data-setup-cost="300" checked><span><strong>Opening marketing</strong><small>Launch · estimate</small></span><b>$300</b></label>
+            </div>
+            <div class="row section-gap"><button type="button" class="btn secondary sm" id="addCustomSetup">+ Add custom cost</button><div>Selected setup: <strong id="setupTotal">$5,030</strong></div></div>
+            <div id="customSetupList"></div>
+          </div>
+
+          <div class="wizard-panel" data-step="5">
+            <div class="panel-kicker">Team</div>
+            <h2>Who needs to be working on opening day?</h2>
+            <div class="staff-table">
+              <div class="staff-row staff-head"><span>Role</span><span>People</span><span>Salary / person</span><span>Monthly</span></div>
+              <div class="staff-row"><strong>Barista</strong><input name="baristaQty" type="number" min="0" value="2"><div class="money-input compact"><span>$</span><input name="baristaSalary" type="number" min="0" value="300"></div><b id="baristaTotal">$600</b></div>
+              <div class="staff-row"><strong>Cashier</strong><input name="cashierQty" type="number" min="0" value="1"><div class="money-input compact"><span>$</span><input name="cashierSalary" type="number" min="0" value="250"></div><b id="cashierTotal">$250</b></div>
+            </div>
+            <label class="toggle-line"><input type="checkbox" name="ownerWorks" checked><span><strong>I will work in the shop too</strong><small>This helps explain why the initial team can stay small.</small></span></label>
+            <div class="calculation-strip"><span>Estimated monthly payroll</span><strong id="payrollTotal">$850</strong></div>
+          </div>
+
+          <div class="wizard-panel" data-step="6">
+            <div class="panel-kicker">Sales</div>
+            <h2>What does a normal month look like if things go to plan?</h2>
+            <p class="muted">Quick mode uses an average order. Detailed menu costing can replace this later.</p>
+            <div class="form-grid">
+              <div class="field"><label>Expected drinks / orders per day</label><input name="unitsPerDay" type="number" min="0" value="80"></div>
+              <div class="field"><label>Average selling price</label><div class="money-input"><span>$</span><input name="avgPrice" type="number" min="0" step="0.05" value="2.20"></div></div>
+              <div class="field"><label>Ingredient + packaging cost / order</label><div class="money-input"><span>$</span><input name="variableCost" type="number" min="0" step="0.05" value="0.75"></div></div>
+              <div class="field"><label>Operating days / month</label><input name="operatingDays" type="number" min="1" max="31" value="30"></div>
+            </div>
+            <div class="grid-3 section-gap mini-kpis"><div><span>Steady revenue</span><strong id="steadyRevenue">$5,280</strong></div><div><span>Variable costs</span><strong id="steadyVariable">$1,800</strong></div><div><span>Contribution / order</span><strong id="contributionUnit">$1.45</strong></div></div>
+            <button type="button" class="btn secondary section-gap" id="detailMenuBtn">Build detailed menu later</button>
+          </div>
+
+          <div class="wizard-panel" data-step="7">
+            <div class="panel-kicker">Monthly overhead</div>
+            <h2>What else will the shop cost every month?</h2>
+            <div class="form-grid">
+              <div class="field"><label>Electricity</label><div class="segmented" data-fill-name="electricity"><button type="button" data-value="150">Low $150</button><button type="button" class="active" data-value="250">Typical $250</button><button type="button" data-value="400">High $400</button></div><input type="hidden" name="electricity" value="250"></div>
+              <div class="field"><label>Water</label><div class="money-input"><span>$</span><input name="water" type="number" min="0" value="40"></div></div>
+              <div class="field"><label>Internet</label><div class="money-input"><span>$</span><input name="internet" type="number" min="0" value="25"></div></div>
+              <div class="field"><label>Monthly marketing</label><div class="money-input"><span>$</span><input name="marketing" type="number" min="0" value="150"></div></div>
+              <div class="field"><label>Cleaning & supplies</label><div class="money-input"><span>$</span><input name="cleaning" type="number" min="0" value="50"></div></div>
+              <div class="field"><label>Maintenance / miscellaneous</label><div class="money-input"><span>$</span><input name="maintenance" type="number" min="0" value="50"></div></div>
+            </div>
+            <div class="calculation-strip"><span>Estimated fixed monthly cost including rent & payroll</span><strong id="fixedMonthlyTotal">$2,015</strong></div>
+          </div>
+
+          <div class="wizard-panel" data-step="8">
+            <div class="panel-kicker">Forecast</div>
+            <h2>New shops usually need time to reach normal sales.</h2>
+            <p class="muted">Choose a ramp-up profile. It changes the cash you need before the business can support itself.</p>
+            <div class="choice-grid ramp-grid">
+              <label class="choice-card"><input type="radio" name="ramp" value="conservative"><strong>Conservative</strong><span>35% → 55% → 75% → 90% → 100%</span></label>
+              <label class="choice-card selected"><input type="radio" name="ramp" value="normal" checked><strong>Normal</strong><span>50% → 70% → 85% → 100%</span></label>
+              <label class="choice-card"><input type="radio" name="ramp" value="strong"><strong>Strong launch</strong><span>70% → 85% → 100%</span></label>
+            </div>
+            <div class="field section-gap"><label>Unexpected-cost buffer</label><div class="segmented" data-fill-name="contingency"><button type="button" data-value="10">10%</button><button type="button" class="active" data-value="15">15% recommended</button><button type="button" data-value="20">20%</button></div><input type="hidden" name="contingency" value="15"></div>
+            <div class="forecast-preview" id="forecastPreview"></div>
+          </div>
+
+          <div class="wizard-panel" data-step="9">
+            <div class="result-hero">
+              <div><div class="panel-kicker">Generated plan</div><h2>Here is what your current idea requires.</h2><p>These numbers are a decision tool, not a guarantee. Update estimates as you collect real prices.</p></div>
+              <div class="result-status caution" id="resultStatus"><span>Plan status</span><strong>Needs adjustment</strong></div>
+            </div>
+            <div class="result-money-grid">
+              <div class="result-money"><span>Available now</span><strong id="resultAvailable">$12,000</strong></div>
+              <div class="result-money featured"><span>Recommended capital</span><strong id="resultRequired">$0</strong></div>
+              <div class="result-money"><span id="gapLabel">Funding gap</span><strong id="resultGap">$0</strong></div>
+            </div>
+            <div class="explanation-card">
+              <h3>Why this amount?</h3>
+              <div class="explanation-row"><span>Location + setup before opening</span><strong id="whyStartup">$0</strong></div>
+              <div class="explanation-row"><span>Cash needed during ramp-up</span><strong id="whyRamp">$0</strong></div>
+              <div class="explanation-row"><span>Unexpected-cost reserve</span><strong id="whyBuffer">$0</strong></div>
+            </div>
+            <div class="grid-4 result-kpis">
+              <div class="kpi"><div class="label">Steady revenue</div><div class="value" id="resultRevenue">$0</div><small>/ month</small></div>
+              <div class="kpi"><div class="label">Operating cost</div><div class="value" id="resultOperating">$0</div><small>/ month at target sales</small></div>
+              <div class="kpi"><div class="label">Operating profit</div><div class="value" id="resultProfit">$0</div><small>/ month at target sales</small></div>
+              <div class="kpi"><div class="label">Break-even</div><div class="value"><span id="resultBreakEven">0</span>/day</div><small>estimated orders</small></div>
+            </div>
+            <div class="grid-2 section-gap">
+              <div class="card inner-card"><h3>Plan risks</h3><div class="stack" id="riskList"></div></div>
+              <div class="card inner-card"><h3>What should you try next?</h3><div class="action-stack"><a class="btn secondary" href="scenarios.html">Compare a smaller shop</a><a class="btn secondary" href="scenarios.html">Try a cheaper location</a><a class="btn secondary" href="budget.html">Replace estimates with quotes</a><a class="btn primary" href="dashboard.html">Save this working plan</a></div></div>
+            </div>
+          </div>
+        </form>
+
+        <div class="wizard-actions" id="wizardActions">
+          <button type="button" class="btn secondary" id="prevStep">Back</button>
+          <span class="muted" id="autosaveLabel">Prototype · changes update instantly</span>
+          <button type="button" class="btn primary" id="nextStep">Continue</button>
+        </div>
+      </section>
+
+      <aside class="card live-summary" id="liveSummary">
+        <div class="live-head"><span>Live plan</span><span class="tag estimated" id="liveMode">Quick estimate</span></div>
+        <h3 id="liveBusinessName">Small milk-tea shop</h3>
+        <div class="summary-metric"><span>Startup cash</span><strong id="liveStartup">$0</strong></div>
+        <div class="summary-metric"><span>Monthly fixed cost</span><strong id="liveFixed">$0</strong></div>
+        <div class="summary-metric"><span>Steady revenue</span><strong id="liveRevenue">$0</strong></div>
+        <div class="summary-metric emphasized"><span>Recommended capital</span><strong id="liveRequired">$0</strong></div>
+        <div class="summary-metric"><span>Available capital</span><strong id="liveAvailable">$0</strong></div>
+        <div class="summary-divider"></div>
+        <div class="gap-summary"><span id="liveGapLabel">Funding gap</span><strong id="liveGap">$0</strong></div>
+        <div class="summary-note" id="liveNote">Complete a few assumptions to see whether your current budget is enough.</div>
+        <div class="confidence-mini"><div class="row"><span>Budget verification</span><strong id="verificationPct">25%</strong></div><div class="progress"><span id="verificationBar" style="width:25%"></span></div><small>Most values are still planning estimates.</small></div>
+      </aside>
+    </div>
+  </main>
+</div>
+<script src="../assets/app.js"></script>
+</body>
+</html>
