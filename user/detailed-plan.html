@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Detailed Plan — OpenReady</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="stylesheet" href="../assets/detailed-plan.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html"><span class="logo">O</span>OpenReady</a>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a class="active" href="onboarding.html">Plan generator</a>
+      <a href="budget.html">Budget</a>
+      <a href="forecast.html">Forecast</a>
+      <a href="scenarios.html">Scenarios</a>
+      <a href="checklist.html">Checklist</a>
+    </nav>
+    <div class="bottom">Detailed costing · Menu economics</div>
+  </aside>
+
+  <main class="main detailed-planner" id="detailedPlanner">
+    <div class="page-head detailed-head">
+      <div>
+        <span class="eyebrow">Detailed planning</span>
+        <h1>Build your real menu economics</h1>
+        <p>Use package prices and recipes to calculate cost per drink, weighted margin, break-even, and monthly ingredient demand.</p>
+      </div>
+      <a class="btn secondary" href="onboarding.html">← Quick plan</a>
+    </div>
+
+    <div class="detail-layout">
+      <section class="detail-main">
+        <div class="card detail-card">
+          <div class="section-title-row"><div><div class="panel-kicker">1 · Ingredients</div><h2>What do you buy?</h2><p class="muted">Enter the package you buy from suppliers. We convert it into a base-unit cost.</p></div><button class="btn secondary sm" type="button" id="addIngredient">+ Ingredient</button></div>
+          <div class="detail-table-wrap"><table class="detail-table" id="ingredientTable"><thead><tr><th>Ingredient</th><th>Pack qty</th><th>Pack unit</th><th>Pack price</th><th>Waste</th><th>Cost / base unit</th><th></th></tr></thead><tbody></tbody></table></div>
+        </div>
+
+        <div class="card detail-card">
+          <div class="section-title-row"><div><div class="panel-kicker">2 · Menu</div><h2>What will you sell?</h2><p class="muted">Sales mix tells us which products matter most to your average margin.</p></div><button class="btn secondary sm" type="button" id="addMenuItem">+ Menu item</button></div>
+          <div class="detail-table-wrap"><table class="detail-table" id="menuTable"><thead><tr><th>Product</th><th>Selling price</th><th>Expected / day</th><th>Recipe cost</th><th>Contribution</th><th>Food cost %</th><th></th></tr></thead><tbody></tbody></table></div>
+        </div>
+
+        <div class="card detail-card">
+          <div class="section-title-row"><div><div class="panel-kicker">3 · Recipes</div><h2>How much goes into each product?</h2><p class="muted">Choose a menu item, then add ingredients in compatible base units.</p></div></div>
+          <div class="recipe-picker"><label>Recipe for <select id="recipeMenuSelect"></select></label><button class="btn secondary sm" type="button" id="addRecipeLine">+ Ingredient line</button></div>
+          <div class="detail-table-wrap"><table class="detail-table" id="recipeTable"><thead><tr><th>Ingredient</th><th>Qty used</th><th>Base unit</th><th>Line cost</th><th></th></tr></thead><tbody></tbody></table></div>
+          <div class="recipe-summary"><div><span>Recipe cost</span><strong id="recipeCost">$0.00</strong></div><div><span>Selling price</span><strong id="recipePrice">$0.00</strong></div><div><span>Contribution</span><strong id="recipeContribution">$0.00</strong></div><div><span>Gross margin</span><strong id="recipeMargin">0%</strong></div></div>
+        </div>
+
+        <div class="card detail-card">
+          <div class="section-title-row"><div><div class="panel-kicker">4 · Monthly model</div><h2>Turn recipes into a business forecast</h2><p class="muted">These fixed costs combine with menu economics to produce break-even and required capital.</p></div></div>
+          <div class="form-grid">
+            <div class="field"><label>Operating days / month</label><input id="detailDays" type="number" min="1" max="31" value="30"></div>
+            <div class="field"><label>Monthly rent</label><div class="money-input"><span>$</span><input id="detailRent" type="number" min="0" value="600"></div></div>
+            <div class="field"><label>Monthly payroll</label><div class="money-input"><span>$</span><input id="detailPayroll" type="number" min="0" value="850"></div></div>
+            <div class="field"><label>Utilities + marketing + other fixed</label><div class="money-input"><span>$</span><input id="detailOtherFixed" type="number" min="0" value="515"></div></div>
+            <div class="field"><label>Startup/setup cash</label><div class="money-input"><span>$</span><input id="detailStartup" type="number" min="0" value="6980"></div></div>
+            <div class="field"><label>Available capital</label><div class="money-input"><span>$</span><input id="detailCapital" type="number" min="0" value="12000"></div></div>
+            <div class="field"><label>Planning horizon</label><select id="detailMonths"><option value="3">3 months</option><option value="6" selected>6 months</option><option value="12">12 months</option></select></div>
+            <div class="field"><label>Contingency reserve</label><select id="detailContingency"><option value="10">10%</option><option value="15" selected>15%</option><option value="20">20%</option></select></div>
+          </div>
+        </div>
+
+        <div class="card detail-card">
+          <div class="section-title-row"><div><div class="panel-kicker">5 · Demand plan</div><h2>What will you need each month?</h2><p class="muted">Aggregated from all menu recipes and expected sales volumes.</p></div></div>
+          <div class="detail-table-wrap"><table class="detail-table"><thead><tr><th>Ingredient</th><th>Monthly usage</th><th>Purchase packs</th><th>Estimated spend</th></tr></thead><tbody id="demandBody"></tbody></table></div>
+        </div>
+      </section>
+
+      <aside class="detail-summary card">
+        <div class="live-head"><div><small>DETAILED PLAN</small><h3>Menu economics</h3></div><span class="tag quoted">Recipe-based</span></div>
+        <div class="detail-kpi"><span>Monthly revenue</span><strong id="detailRevenue">$0</strong></div>
+        <div class="detail-kpi"><span>Ingredient + packaging</span><strong id="detailVariable">$0</strong></div>
+        <div class="detail-kpi"><span>Fixed monthly cost</span><strong id="detailFixed">$0</strong></div>
+        <div class="detail-kpi"><span>Operating profit</span><strong id="detailProfit">$0</strong></div>
+        <div class="detail-kpi accent"><span>Weighted contribution / order</span><strong id="detailContribution">$0.00</strong></div>
+        <div class="detail-kpi"><span>Break-even</span><strong><span id="detailBreakeven">0</span> orders/day</strong></div>
+        <div class="detail-kpi"><span>Recommended capital</span><strong id="detailRequired">$0</strong></div>
+        <div class="detail-kpi"><span>Funding gap</span><strong id="detailGap">$0</strong></div>
+        <div class="progress-block"><div class="row"><span class="muted">Budget verification</span><strong id="detailVerification">70%</strong></div><div class="progress"><span id="detailVerificationBar" style="width:70%"></span></div></div>
+        <div class="detail-note" id="detailInsight">Add recipes to replace rough average-cost assumptions with real product economics.</div>
+        <a class="btn primary full" href="scenarios.html">Compare scenarios</a>
+      </aside>
+    </div>
+  </main>
+</div>
+<script src="../assets/app.js"></script>
+<script src="../assets/detailed-plan.js"></script>
+</body>
+</html>
