@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Businesses — OpenReady</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <a class="brand" href="../index.html"><span class="logo">O</span>OpenReady</a>
+    <nav>
+      <a class="active" href="businesses.html">Businesses</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="onboarding.html">Plan generator</a>
+      <a href="budget.html">Budget</a>
+      <a href="forecast.html">Forecast</a>
+      <a href="scenarios.html">Scenarios</a>
+      <a href="checklist.html">Checklist</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="page-head"><div><span class="eyebrow">Workspace</span><h1>Your businesses</h1><p>Create separate startup plans. Each business keeps its own quick plan, detailed menu economics, forecast assumptions, and active selection.</p></div><button class="btn primary" id="createBusiness">+ New business</button></div>
+    <div class="grid-3" id="businessGrid"></div>
+  </main>
+</div>
+<script src="../assets/business-store.js"></script>
+<script>
+(()=>{
+ const grid=document.getElementById('businessGrid');
+ const render=()=>{
+   const state=OpenReadyStore.getState();
+   grid.innerHTML=state.businesses.map(b=>{
+     const active=b.id===state.activeBusinessId;
+     const quick=b.quickPlan||{};const detailed=b.detailedPlan||{};
+     return `<div class="card business-card ${active?'business-active':''}" data-id="${b.id}">
+       <div class="row"><span class="tag ${active?'confirmed':'estimated'}">${active?'Active':'Business'}</span><button class="btn ghost sm" data-delete="${b.id}">Delete</button></div>
+       <h2>${b.name}</h2><p class="muted">${b.type||'Business'} · ${b.city||'No city yet'}</p>
+       <div class="stack section-gap">
+         <div class="row"><span class="muted">Quick plan</span><strong>${quick.savedAt?'Saved':'Not started'}</strong></div>
+         <div class="row"><span class="muted">Detailed plan</span><strong>${detailed.savedAt?'Saved':'Not started'}</strong></div>
+         <div class="row"><span class="muted">Required capital</span><strong>${quick.requiredCapital?new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(quick.requiredCapital):'—'}</strong></div>
+       </div>
+       <div class="row section-gap"><button class="btn secondary" data-open="${b.id}">Open</button><a class="btn primary" href="onboarding.html" data-plan="${b.id}">Plan</a></div>
+     </div>`;
+   }).join('');
+   grid.querySelectorAll('[data-open]').forEach(btn=>btn.addEventListener('click',()=>{OpenReadyStore.setActiveBusiness(btn.dataset.open);render();}));
+   grid.querySelectorAll('[data-plan]').forEach(a=>a.addEventListener('click',()=>OpenReadyStore.setActiveBusiness(a.dataset.plan)));
+   grid.querySelectorAll('[data-delete]').forEach(btn=>btn.addEventListener('click',()=>{if(confirm('Delete this business and its saved prototype data?')){OpenReadyStore.deleteBusiness(btn.dataset.delete);render();}}));
+ };
+ document.getElementById('createBusiness').addEventListener('click',()=>{const name=prompt('Business name','Business '+String.fromCharCode(65+OpenReadyStore.getState().businesses.length));if(!name)return;OpenReadyStore.createBusiness(name);render();});
+ render();
+})();
+</script>
+</body></html>
